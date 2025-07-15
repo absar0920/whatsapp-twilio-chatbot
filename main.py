@@ -12,6 +12,8 @@ from session import engine, SessionLocal
 import random
 from ai.ai import BusinessAdvisorAgent
 
+user_histories = {}
+
 app = FastAPI()
 
 TWILIO_ACCOUNT_SID = os.getenv("TWILIO_ACCOUNT_SID")
@@ -39,10 +41,11 @@ async def callback(request: Request, Body: Optional[str] = Form(None)):
     sender = form_dict.get("From")
     user_message = form_dict.get("Body")
 
-    ai_response = None
-    if user_message:
-        ai_response = ai_agent.handle_query(user_message)
-        print(f"AI response: {ai_response}")
+    # Retrieve or initialize chat history for this user
+    chat_history = user_histories.get(sender, [])
+
+    ai_response, updated_history = ai_agent.handle_query(user_message, chat_history)
+    user_histories[sender] = updated_history
 
     if (
         TWILIO_ACCOUNT_SID
@@ -66,6 +69,7 @@ async def callback(request: Request, Body: Optional[str] = Form(None)):
             "body": user_message,
             "ai_response": ai_response,
             "form": form_dict,
+            "history": updated_history,
         }
     )
 

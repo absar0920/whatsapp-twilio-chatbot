@@ -32,7 +32,7 @@ def get_products(query: str, limit: int = 10, config: RunnableConfig = {}):
 
 
 @tool
-def get_product_details(product_id: id, config: RunnableConfig = {}):
+def get_product_details(product_id: int, config: RunnableConfig = {}):
     """
         Get product details based on it's product_id
     """
