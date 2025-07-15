@@ -36,9 +36,6 @@ def get_product_details(product_id: int, config: RunnableConfig = {}):
     """
         Get product details based on it's product_id
     """
-
-    print("called get_product_details tool with product_id: ", product_id)
-
     db = SessionLocal()
     p: Product = db.query(Product).filter(
         Product.id == product_id
