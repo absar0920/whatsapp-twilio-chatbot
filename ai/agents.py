@@ -20,5 +20,5 @@ def get_ecommerce_agent(model=None, checkpoint=None):
             - Use the chat history to provide context-aware, personalized responses.
         """,
         tools=[get_products, get_product_details],
-        checkpointer=checkpoint
+        checkpointer=checkpoint,
     )

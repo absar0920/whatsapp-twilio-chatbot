@@ -24,6 +24,7 @@ Base.metadata.create_all(bind=engine)
 
 ai_agent = BusinessAdvisorAgent()
 
+
 @app.get("/")
 def read_root():
     return {"message": "Welcome to the FastAPI app!"}
@@ -41,7 +42,6 @@ async def callback(request: Request, Body: Optional[str] = Form(None)):
     sender = form_dict.get("From")
     user_message = form_dict.get("Body")
 
-    # Retrieve or initialize chat history for this user
     chat_history = user_histories.get(sender, [])
 
     ai_response, updated_history = ai_agent.handle_query(user_message, chat_history)
