@@ -3,6 +3,8 @@ from typing import Optional
 from fastapi import FastAPI, Request, Form
 from fastapi.responses import JSONResponse
 from twilio.rest import Client
+import json
+from ai.prompt import get_prompt
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -41,10 +43,18 @@ async def callback(request: Request, Body: Optional[str] = Form(None)):
     form_dict = dict(form)
     sender = form_dict.get("From")
     user_message = form_dict.get("Body")
+    phone_number = sender
+    customer_name = (
+        json.loads(form_dict.get("ChannelMetadata", {}))
+        .get("data", {})
+        .get("context", {})
+        .get("ProfileName")
+    )
 
     chat_history = user_histories.get(sender, [])
-
-    ai_response, updated_history = ai_agent.handle_query(user_message, chat_history)
+    user_query = get_prompt(user_message, customer_name, phone_number)
+    print("UserQuery: ", user_query)
+    ai_response, updated_history = ai_agent.handle_query(user_query=user_query, chat_history=chat_history)
     user_histories[sender] = updated_history
 
     if (
