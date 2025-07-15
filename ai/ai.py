@@ -14,7 +14,7 @@ class BusinessAdvisorAgent:
         chat_history.append({"role": "assistant", "content": response})
         if not response or response.strip().lower() in {"n/a", "none", "no answer", "not applicable"}:
             fallback = (
-                f"Hi! I'm your Tech Haven assistant. You can ask me about our products, prices, availability, or details about any item in our store. "
+                f"Hi! I'm your NexSaas assistant. You can ask me about our products, prices, availability, or details about any item in our store. "
                 f"For example, try asking 'What laptops do you have?' or 'Tell me about the Apple iPhone 14 Pro.'"
             )
             chat_history[-1]["content"] = fallback
