@@ -46,6 +46,7 @@ def get_products(query: str, limit: int = 10, config: RunnableConfig = {}):
         for p in results
     ]
 
+
 @tool
 def get_product_details(product_id: int, config: RunnableConfig = {}):
     """
@@ -60,6 +61,7 @@ def get_product_details(product_id: int, config: RunnableConfig = {}):
 
     return f"Product ID: {p.id}, Name: {p.name}, Price: ${p.price:.2f}, Stock: {p.stock}, Description: {p.description}"
 
+
 @tool
 def get_orders_for_a_customer(customer_name: str, config: RunnableConfig = {}):
     """
@@ -70,18 +72,18 @@ def get_orders_for_a_customer(customer_name: str, config: RunnableConfig = {}):
     orders: List[Order] = (
         db.query(Order).filter(Order.customer_name.ilike(customer_name)).all()
     )
-
-    print(f"order for customer: {customer_name}.", [o.id for o in orders])
     db.close()
     if not orders or len(orders) == 0:
-        return "The customer does not have any orders"
+        return f"No orders found for {customer_name}."
 
-    return "\n".join(
-        [
-            f"Order ID: {o.id}, Product ID: {o.product_id}, Product Name: {o.product_id.name}, Quantity: {o.quantity}, Total Price: ${o.total_price:.2f}, Status: {o.status}"
-            for o in orders
-        ]
-    )
+    summary = f"Order history for {customer_name}:\n"
+    for o in orders:
+        summary += (
+            f"- Order ID: {o.id}, Product ID: {o.product_id}, Quantity: {o.quantity}, "
+            f"Total Price: ${o.total_price:.2f}, Status: {o.status}, Date: {o.created_at.strftime('%Y-%m-%d')}\n"
+        )
+    return summary
+
 
 @tool
 def generate_order(
@@ -102,7 +104,7 @@ def generate_order(
         .filter(
             Order.customer_name == customer_name,
             Order.product_id == product_id,
-            Order.status == "pending"
+            Order.status == "pending",
         )
         .order_by(Order.created_at.desc())
         .first()
