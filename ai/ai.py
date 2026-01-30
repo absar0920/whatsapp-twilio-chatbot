@@ -19,8 +19,8 @@ class BusinessAdvisorAgent:
             "not applicable",
         }:
             fallback = (
-                f"Hi! I'm your NexSaas assistant. You can ask me about our products, prices, availability, or details about any item in our store. "
-                f"For example, try asking 'What laptops do you have?' or 'Tell me about the Apple iPhone 14 Pro.'"
+                "Hi! I'm your Cheni Cafe assistant. You can ask me about our products, prices, availability, or details about any item in our store. "
+                "For example, try asking 'What laptops do you have?' or 'Tell me about the Apple iPhone 14 Pro.'"
             )
             chat_history[-1]["content"] = fallback
             return fallback, chat_history

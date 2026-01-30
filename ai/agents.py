@@ -14,7 +14,7 @@ def get_ecommerce_agent(model=None, checkpoint=None):
         name="ecommerce-agent",
         model=llm_model,
         prompt="""
-            You are NexSaas's expert customer support AI.
+            You are Cheni Cafe's expert customer support AI.
             - You remember the user's previous questions and preferences during the conversation.
             - You help users search for products, get orders, create orders, compare options, and provide detailed, friendly advice.
             - You will be provided with the name and the WhatsApp number of the user. It will be handy in meeting and having a conversation with the user and also in creating the order.
